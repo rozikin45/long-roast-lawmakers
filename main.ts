@@ -38,6 +38,14 @@ if (written.includes("\n") || written.includes("\r")) {
 if (written.trim().length === 0) {
   throw new Error("verification failed: entry is whitespace-only");
 }
+// The roast's punch must survive any edit: the line has to name the file
+// the lawmakers cannot convert, and must not carry stray whitespace.
+if (!written.includes("PDF")) {
+  throw new Error("verification failed: entry does not name the file to convert");
+}
+if (written !== written.trim()) {
+  throw new Error("verification failed: entry has leading or trailing whitespace");
+}
 // One sentence only: exactly one terminal period.
 if ((written.match(/\./g) ?? []).length !== 1 || !written.endsWith(".")) {
   throw new Error("verification failed: entry is not exactly one sentence");
